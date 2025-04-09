@@ -10,35 +10,96 @@ public class LoginFrame extends JFrame {
     private JPasswordField passwordField;
 
     public LoginFrame() {
-        setTitle("Đăng nhập hệ thống Skincare Booking");
-        setSize(400, 250);
-        setLocationRelativeTo(null); // Căn giữa
+        setTitle("Đăng nhập Skincare App");
+        setSize(420, 360);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new GridLayout(4, 1, 10, 10));
+        setLayout(new BorderLayout());
 
-        // Panel cho Username
-        JPanel userPanel = new JPanel(new FlowLayout());
-        userPanel.add(new JLabel("Username:"));
-        usernameField = new JTextField(20);
-        userPanel.add(usernameField);
-        add(userPanel);
+        // Panel chính có nền ảnh
+        BackgroundPanel mainPanel = new BackgroundPanel("images/themeloginout.jpg"); // <== thay đúng đường dẫn ảnh
+        mainPanel.setLayout(new GridBagLayout());
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Panel cho Password
-        JPanel passPanel = new JPanel(new FlowLayout());
-        passPanel.add(new JLabel("Password:"));
-        passwordField = new JPasswordField(20);
-        passPanel.add(passwordField);
-        add(passPanel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1;
 
-        // Nút Đăng nhập
+        // Tiêu đề
+        JLabel titleLabel = new JLabel("Đăng nhập");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 22));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        mainPanel.add(titleLabel, gbc);
+
+        // Username
+        gbc.gridy++;
+        gbc.gridwidth = 1;
+        JLabel userLabel = new JLabel("Tài khoản:");
+        userLabel.setForeground(Color.WHITE);
+        mainPanel.add(userLabel, gbc);
+
+        usernameField = new JTextField();
+        styleTextField(usernameField);
+        gbc.gridx = 1;
+        mainPanel.add(usernameField, gbc);
+
+        // Password
+        gbc.gridy++;
+        gbc.gridx = 0;
+        JLabel passLabel = new JLabel("Mật khẩu:");
+        passLabel.setForeground(Color.WHITE);
+        mainPanel.add(passLabel, gbc);
+
+        passwordField = new JPasswordField();
+        styleTextField(passwordField);
+        gbc.gridx = 1;
+        mainPanel.add(passwordField, gbc);
+
+        // Nút đăng nhập
         JButton loginButton = new JButton("Đăng nhập");
+        loginButton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        loginButton.setBackground(new Color(255, 204, 229));
+        loginButton.setFocusPainted(false);
+        loginButton.setBorder(BorderFactory.createLineBorder(Color.PINK, 1));
         loginButton.addActionListener(new LoginAction());
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(loginButton);
-        add(buttonPanel);
+
+        gbc.gridy++;
+        gbc.gridx = 0;
+        gbc.gridwidth = 2;
+        gbc.anchor = GridBagConstraints.CENTER;
+        mainPanel.add(loginButton, gbc);
+
+        // Nút đăng ký
+        JButton registerButton = new JButton("Đăng ký tài khoản mới");
+        registerButton.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+        registerButton.setForeground(Color.WHITE);
+        registerButton.setContentAreaFilled(false);
+        registerButton.setBorderPainted(false);
+        registerButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        registerButton.addActionListener(e -> {
+            RegisterFrame registerFrame = new RegisterFrame();
+            registerFrame.setVisible(true);
+        });
+
+        gbc.gridy++;
+        mainPanel.add(registerButton, gbc);
+
+        add(mainPanel, BorderLayout.CENTER);
     }
 
-    // Xử lý khi nhấn nút
+    private void styleTextField(JTextField textField) {
+        textField.setPreferredSize(new Dimension(200, 30));
+        textField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        textField.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1, true)); // Bo góc
+    }
+
+    // Xử lý đăng nhập
     private class LoginAction implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -49,22 +110,15 @@ public class LoginFrame extends JFrame {
             User user = userDAO.login(username, password);
 
             if (user != null) {
-                JOptionPane.showMessageDialog(null, "✅ Đăng nhập thành công! Chào " + user.getFullname());
-
-                // Mở màn hình chính
-                MainFrame mainFrame = new MainFrame(user);
-                mainFrame.setVisible(true);
-
-                // Đóng LoginFrame
-                SwingUtilities.getWindowAncestor((Component) e.getSource()).dispose();
+                JOptionPane.showMessageDialog(null, "Đăng nhập thành công! Chào " + user.getFullName());
+                new MainFrame(user).setVisible(true);
+                dispose();
             } else {
-
-                JOptionPane.showMessageDialog(null, "❌ Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Sai tài khoản hoặc mật khẩu!", "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
 
-    // Chạy chương trình
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             LoginFrame frame = new LoginFrame();

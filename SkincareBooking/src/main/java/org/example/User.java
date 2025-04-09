@@ -5,49 +5,89 @@ public class User {
     private String username;
     private String passwordHash;
     private String email;
-    private String fullname;
+    private String fullName;
     private String phoneNumber;
     private String role;
 
-    // Constructor
-    public User(int userID, String username, String passwordHash, String email, String fullname, String phoneNumber, String role) {
+    // ✅ Constructor mặc định
+    public User() {
+    }
+
+    // ✅ Constructor đầy đủ tham số
+    public User(int userID, String username, String passwordHash, String email, String fullName, String phoneNumber, String role) {
         this.userID = userID;
         this.username = username;
         this.passwordHash = passwordHash;
         this.email = email;
-        this.fullname = fullname;
+        this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.role = role;
     }
 
-    // Getters and Setters
-    public int getUserID() { return userID; }
-    public void setUserID(int userID) { this.userID = userID; }
+    // ✅ Getter & Setter
+    public int getUserID() {
+        return userID;
+    }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    public void setUserID(int userID) {
+        this.userID = userID;
+    }
 
-    public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(String passwordHash) { this.passwordHash = passwordHash; }
+    public String getUsername() {
+        return username;
+    }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-    public String getFullname() { return fullname; }
-    public void setFullname(String fullname) { this.fullname = fullname; }
+    public String getPasswordHash() {
+        return passwordHash;
+    }
 
-    public String getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(String phoneNumber) { this.phoneNumber = phoneNumber; }
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 
-    public String getRole() { return role; }
-    public void setRole(String role) { this.role = role; }
+    public String getEmail() {
+        return email;
+    }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    // ✅ Hiển thị thông tin người dùng
     @Override
     public String toString() {
         return "User{" +
                 "userID=" + userID +
                 ", username='" + username + '\'' +
-                ", fullname='" + fullname + '\'' +
+                ", fullName='" + fullName + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", role='" + role + '\'' +

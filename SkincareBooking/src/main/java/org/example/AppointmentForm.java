@@ -17,7 +17,7 @@ public class AppointmentForm extends JFrame {
 
     public AppointmentForm(User user) {
         this.user = user;
-        setTitle("🧖‍♀️ Đặt lịch chăm sóc da");
+        setTitle("Đặt lịch chăm sóc da");
         setSize(500, 550);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -26,7 +26,14 @@ public class AppointmentForm extends JFrame {
     }
 
     private void initUI() {
-        // ✅ Load ảnh nền từ thư mục resources/images/spa.jpg
+        // Font và màu chữ chung
+        UIManager.put("Label.font", new Font("Segoe UI", Font.PLAIN, 14));
+        UIManager.put("Button.font", new Font("Segoe UI", Font.BOLD, 14));
+        UIManager.put("TextField.font", new Font("Segoe UI", Font.PLAIN, 14));
+        UIManager.put("TextArea.font", new Font("Segoe UI", Font.PLAIN, 14));
+        Color textColor = Color.WHITE;
+
+        // Ảnh nền
         Image bgImage = null;
         try {
             bgImage = new ImageIcon(getClass().getResource("/images/spa.jpg")).getImage();
@@ -42,17 +49,17 @@ public class AppointmentForm extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // ✅ Hiển thị logo ứng dụng từ resources/images/logo.png
+        // Logo
         java.net.URL logoURL = getClass().getClassLoader().getResource("images/logo.jpg");
         if (logoURL != null) {
             ImageIcon logoIcon = new ImageIcon(logoURL);
             Image scaledLogo = logoIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             logoLabel = new JLabel(new ImageIcon(scaledLogo));
         } else {
-            System.out.println("⚠️ Không tìm thấy ảnh logo! Đảm bảo ảnh nằm trong src/main/resources/images/logo.png");
-            logoLabel = new JLabel("🌸 Spa Care");
+            System.out.println("⚠️ Không tìm thấy ảnh logo!");
+            logoLabel = new JLabel("Spa Care");
+            logoLabel.setForeground(textColor);
         }
-
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -61,8 +68,8 @@ public class AppointmentForm extends JFrame {
         backgroundPanel.add(logoLabel, gbc);
 
         // Nút xem lịch hẹn
-        JButton viewButton = new JButton("📋 Xem lịch hẹn");
-        viewButton.setFont(new Font("Arial", Font.PLAIN, 14));
+        JButton viewButton = new JButton("Xem lịch hẹn", loadIcon("calendar.png"));
+        styleButton(viewButton, textColor);
         viewButton.addActionListener(this::handleViewAppointments);
         gbc.gridy++;
         backgroundPanel.add(viewButton, gbc);
@@ -70,37 +77,48 @@ public class AppointmentForm extends JFrame {
         // Ngày giờ hẹn
         gbc.gridy++;
         gbc.gridwidth = 1;
-        backgroundPanel.add(new JLabel("🗓 Ngày giờ hẹn:"), gbc);
+        JLabel dateLabel = new JLabel("Ngày giờ hẹn:");
+        dateLabel.setForeground(textColor);
+        backgroundPanel.add(dateLabel, gbc);
 
         dateSpinner = new JSpinner(new SpinnerDateModel());
         JSpinner.DateEditor dateEditor = new JSpinner.DateEditor(dateSpinner, "yyyy-MM-dd HH:mm");
         dateSpinner.setEditor(dateEditor);
         dateSpinner.setValue(new Date());
+        styleSpinner(dateSpinner, textColor);
         gbc.gridx = 1;
         backgroundPanel.add(dateSpinner, gbc);
 
-        // Tên dịch vụ
+        // Dịch vụ
         gbc.gridy++;
         gbc.gridx = 0;
-        backgroundPanel.add(new JLabel("🧴 Dịch vụ:"), gbc);
+        JLabel serviceLabel = new JLabel("Dịch vụ:");
+        serviceLabel.setForeground(textColor);
+        backgroundPanel.add(serviceLabel, gbc);
 
         serviceField = new JTextField();
+        styleTextField(serviceField, textColor);
         gbc.gridx = 1;
         backgroundPanel.add(serviceField, gbc);
 
         // Ghi chú
         gbc.gridy++;
         gbc.gridx = 0;
-        backgroundPanel.add(new JLabel("📝 Ghi chú:"), gbc);
+        JLabel noteLabel = new JLabel("Ghi chú:");
+        noteLabel.setForeground(textColor);
+        backgroundPanel.add(noteLabel, gbc);
 
         notesArea = new JTextArea(3, 20);
+        styleTextArea(notesArea, textColor);
         JScrollPane scrollPane = new JScrollPane(notesArea);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         gbc.gridx = 1;
         backgroundPanel.add(scrollPane, gbc);
 
         // Nút đặt lịch
-        JButton bookButton = new JButton("✅ Đặt lịch");
-        bookButton.setFont(new Font("Arial", Font.BOLD, 14));
+        JButton bookButton = new JButton("Đặt lịch", loadIcon("check.png"));
+        styleButton(bookButton, textColor);
         bookButton.addActionListener(this::handleBooking);
         gbc.gridy++;
         gbc.gridx = 0;
@@ -110,7 +128,56 @@ public class AppointmentForm extends JFrame {
         setContentPane(backgroundPanel);
     }
 
-    // Xử lý đặt lịch
+    private void styleButton(JButton button, Color textColor) {
+        button.setForeground(textColor);
+        button.setOpaque(false);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setFocusPainted(false);
+    }
+
+    private void styleTextField(JTextField field, Color textColor) {
+        field.setForeground(textColor);
+        field.setBackground(new Color(255, 255, 255, 50));
+        field.setOpaque(false);
+        field.setCaretColor(textColor);
+        field.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+    }
+
+    private void styleTextArea(JTextArea area, Color textColor) {
+        area.setForeground(textColor);
+        area.setBackground(new Color(255, 255, 255, 50));
+        area.setOpaque(false);
+        area.setCaretColor(textColor);
+        area.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+    }
+
+    private void styleSpinner(JSpinner spinner, Color textColor) {
+        JComponent editor = spinner.getEditor();
+        if (editor instanceof JSpinner.DefaultEditor) {
+            JTextField tf = ((JSpinner.DefaultEditor) editor).getTextField();
+            tf.setForeground(textColor);
+            tf.setBackground(new Color(255, 255, 255, 50));
+            tf.setOpaque(false);
+            tf.setCaretColor(textColor);
+            tf.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+        }
+    }
+
+    private ImageIcon loadIcon(String fileName) {
+        try {
+            java.net.URL iconURL = getClass().getResource("/icons/" + fileName);
+            if (iconURL != null) {
+                ImageIcon icon = new ImageIcon(iconURL);
+                Image scaled = icon.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+                return new ImageIcon(scaled);
+            }
+        } catch (Exception e) {
+            System.out.println("⚠️ Không tìm thấy icon: " + fileName);
+        }
+        return null;
+    }
+
     private void handleBooking(ActionEvent e) {
         Date utilDate = (Date) dateSpinner.getValue();
         java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -133,14 +200,13 @@ public class AppointmentForm extends JFrame {
 
         AppointmentDAO dao = new AppointmentDAO();
         if (dao.bookAppointment(appt)) {
-            JOptionPane.showMessageDialog(this, "🎉 Đặt lịch thành công!");
+            JOptionPane.showMessageDialog(this, "Đặt lịch thành công!");
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "❌ Lỗi khi đặt lịch.");
+            JOptionPane.showMessageDialog(this, "Lỗi khi đặt lịch.");
         }
     }
 
-    // Xem danh sách lịch hẹn
     private void handleViewAppointments(ActionEvent e) {
         AppointmentDAO dao = new AppointmentDAO();
         List<Appointment> appointments = dao.getAppointmentsByUser(user.getUserID());
@@ -158,10 +224,10 @@ public class AppointmentForm extends JFrame {
             String dateStr = (appt.getAppointmentDate() != null) ? dateFormat.format(appt.getAppointmentDate()) : "N/A";
             String timeStr = (appt.getAppointmentTime() != null) ? timeFormat.format(appt.getAppointmentTime()) : "N/A";
 
-            sb.append("📅 Ngày: ").append(dateStr)
-                    .append(" 🕒 Giờ: ").append(timeStr)
-                    .append("\n🧴 Dịch vụ: ").append(appt.getServiceName() != null ? appt.getServiceName() : "")
-                    .append("\n📝 Ghi chú: ").append(appt.getNotes() != null ? appt.getNotes() : "")
+            sb.append("Ngày: ").append(dateStr)
+                    .append(" | Giờ: ").append(timeStr)
+                    .append("\nDịch vụ: ").append(appt.getServiceName() != null ? appt.getServiceName() : "")
+                    .append("\nGhi chú: ").append(appt.getNotes() != null ? appt.getNotes() : "")
                     .append("\n---------------------------\n");
         }
 
@@ -169,6 +235,6 @@ public class AppointmentForm extends JFrame {
         textArea.setEditable(false);
         textArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
         JScrollPane scrollPane = new JScrollPane(textArea);
-        JOptionPane.showMessageDialog(this, scrollPane, "📋 Danh sách lịch hẹn", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, scrollPane, "Danh sách lịch hẹn", JOptionPane.INFORMATION_MESSAGE);
     }
 }
