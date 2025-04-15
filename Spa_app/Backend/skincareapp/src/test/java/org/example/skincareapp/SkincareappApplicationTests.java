@@ -1,0 +1,13 @@
+package org.example.skincareapp;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class SkincareappApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
