@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Chi tiết dịch vụ</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 40px;
+      background: #fff5f8;
+    }
+    h2 {
+      color: #d6336c;
+    }
+    .content {
+      margin-top: 20px;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #d6336c;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h2 id="serviceTitle">Chi tiết dịch vụ</h2>
+
+  <div class="content" id="serviceContent">
+    <!-- Nội dung động sẽ được chèn ở đây -->
+  </div>
+
+  <button onclick="goToBooking()">Đặt lịch ngay</button>
+
+  <script>
+    const serviceId = localStorage.getItem("serviceId");
+    const serviceName = localStorage.getItem("serviceName");
+
+    document.getElementById("serviceTitle").innerText = serviceName;
+
+    const serviceDescriptions = {
+      1: "Chăm sóc da cơ bản giúp làm sạch, cấp ẩm và thư giãn làn da.",
+      2: "Liệu trình điều trị mụn giúp giảm viêm, làm dịu da và ngăn ngừa mụn.",
+      3: "Dịch vụ điều trị nám giúp làm sáng vùng da tối màu, đều màu da.",
+      4: "Giải pháp trị sẹo rỗ bằng công nghệ cao như phi kim, laser CO2.",
+      5: "Liệu trình giảm béo không xâm lấn, an toàn và hiệu quả.",
+      6: "Triệt lông bằng laser, cho làn da mịn màng lâu dài.",
+      7: "Dịch vụ phun xăm môi, mày, mí tự nhiên, không đau.",
+      8: "Tắm trắng toàn thân bằng công nghệ phi thuyền, an toàn tuyệt đối."
+    };
+
+    document.getElementById("serviceContent").innerText = serviceDescriptions[serviceId] || "Không tìm thấy nội dung.";
+
+    function goToBooking() {
+      window.location.href = "datlich.html";
+    }
+  </script>
+
+</body>
+</html>

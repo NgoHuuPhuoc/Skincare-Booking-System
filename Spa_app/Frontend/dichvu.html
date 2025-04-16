@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Dịch vụ tại Spa</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #fff5f8;
+        }
+        header {
+            background: #fff;
+            padding: 10px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #eee;
+        }
+        header img.logo {
+            height: 60px;
+        }
+        .menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+        .menu a {
+            text-decoration: none;
+            color: #d6336c;
+            font-weight: bold;
+        }
+        .hotline {
+            background: #d6336c;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        h2 {
+            text-align: center;
+            margin: 30px 0;
+            color: #d6336c;
+        }
+        .services-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 0 40px 60px;
+        }
+        .service-card {
+            width: 160px;
+            height: 180px;
+            background: white;
+            border-radius: 16px;
+            text-align: center;
+            padding: 25px 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .service-card:hover {
+            border-color: #d6336c;
+            transform: translateY(-5px);
+        }
+        .service-card img {
+            height: 65px;
+            width: 65px;
+            margin-bottom: 12px;
+        }
+        .service-card p {
+            margin: 0;
+            font-weight: bold;
+            font-size: 16px;
+            color: #d6336c;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="icons/spa.png" alt="Spa" class="logo">
+    <div class="menu">
+        <a href="#">Về chúng tôi</a>
+        <a href="#">Dịch vụ làm đẹp</a>
+        <a href="#">Phun xăm</a>
+        <a href="#">Bác sĩ</a>
+        <a href="#">Tips làm đẹp</a>
+        <a href="#">Nhượng quyền</a>
+        <span class="hotline">📞 Hotline: 1800 3333</span>
+    </div>
+</header>
+
+<h2>Dịch vụ tại Spa</h2>
+<div class="services-container">
+<!-- ✅ Đã sửa: thêm tên dịch vụ vào goToDetail(id, name) -->
+<div class="service-card" onclick="goToDetail(1, 'Chăm Sóc Da')">
+    <img src="icons/skincare.png" alt="Chăm sóc da">
+    <p>Chăm Sóc Da</p>
+</div>
+<div class="service-card" onclick="goToDetail(2, 'Điều Trị Mụn')">
+    <img src="icons/acne.png" alt="Điều trị mụn">
+    <p>Điều Trị Mụn</p>
+</div>
+<div class="service-card" onclick="goToDetail(3, 'Điều Trị Nám')"> <!-- ❌ bạn đang ghi nhầm ggoToDetail -->
+    <img src="icons/pigment.png" alt="Điều trị nám">
+    <p>Điều Trị Nám</p>
+</div>
+<div class="service-card" onclick="goToDetail(4, 'Điều Trị Sẹo Rỗ')">
+    <img src="icons/scar.png" alt="Điều trị sẹo rỗ">
+    <p>Điều Trị Sẹo Rỗ</p>
+</div>
+<div class="service-card" onclick="goToDetail(5, 'Giảm Béo')">
+    <img src="icons/slim.png" alt="Giảm béo">
+    <p>Giảm Béo</p>
+</div>
+<div class="service-card" onclick="goToDetail(6, 'Triệt Lông')">
+    <img src="icons/hair.png" alt="Triệt lông">
+    <p>Triệt Lông</p>
+</div>
+<div class="service-card" onclick="goToDetail(7, 'Phun Xăm')">
+    <img src="icons/tattoo.png" alt="Phun xăm">
+    <p>Phun Xăm</p>
+</div>
+<div class="service-card" onclick="goToDetail(8, 'Tắm Trắng')">
+    <img src="icons/bath.png" alt="Tắm trắng">
+    <p>Tắm Trắng</p>
+</div>
+</div>
+
+<script>
+    function goToDetail(id, name) {
+        localStorage.setItem("serviceId", id);
+        localStorage.setItem("serviceName", name); // rất quan trọng để hiện tiêu đề
+        window.location.href = "chitiet.html";
+    }
+</script>
+
+</body>
+</html>
