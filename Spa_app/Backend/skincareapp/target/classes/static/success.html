@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Xác nhận đặt lịch</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 600px;
+            margin-top: 50px;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .container img {
+            width: 120px;
+        }
+
+        h2 {
+            color: #e6005c;
+            margin-top: 20px;
+        }
+
+        .info {
+            margin-top: 20px;
+            font-size: 16px;
+        }
+
+        .highlight {
+            color: #e6005c;
+            font-weight: bold;
+        }
+
+        .btn {
+            margin-top: 30px;
+            padding: 12px 25px;
+            background-color: #e6005c;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .note {
+            font-size: 14px;
+            color: #555;
+            margin-top: 20px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <img src="https://img.icons8.com/ios-filled/100/checked.png" alt="Success">
+    <h2>ĐẶT LỊCH THÀNH CÔNG</h2>
+    <div class="info">
+        Cảm ơn bạn <span class="highlight" id="name">...</span>, số điện thoại <span class="highlight" id="phone">...</span><br>
+        đã chọn dịch vụ <span class="highlight" id="service">...</span> tại chi nhánh <span class="highlight" id="branch">...</span><br>
+        vào lúc <span class="highlight" id="time">...</span>
+    </div>
+
+    <button class="btn" onclick="window.location.href='dichvu.html'">XEM DỊCH VỤ</button>
+
+    <div class="note">
+        <p>🔸 Bạn vui lòng đến đúng giờ để được phục vụ tốt nhất!</p>
+        <p>🔸 Nếu cần hỗ trợ, vui lòng liên hệ: <b>1800 3333</b></p>
+    </div>
+</div>
+
+<script>
+    const info = JSON.parse(localStorage.getItem("lastBooking"));
+
+    if (info) {
+        document.getElementById("name").textContent = info.name;
+        document.getElementById("phone").textContent = info.phone;
+        document.getElementById("service").textContent = info.service;
+        document.getElementById("branch").textContent = info.branch;
+        document.getElementById("time").textContent = info.time;
+    }
+</script>
+</body>
+</html>
