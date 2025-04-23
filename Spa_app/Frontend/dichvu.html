@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Dịch vụ tại Spa</title>
     <style>
         * {
@@ -27,11 +27,27 @@
             display: flex;
             gap: 20px;
             align-items: center;
+            position: relative;
         }
         .menu a {
             text-decoration: none;
             color: #d6336c;
             font-weight: bold;
+            position: relative;
+        }
+        .menu a[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #d6336c;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            white-space: nowrap;
+            z-index: 100;
         }
         .hotline {
             background: #d6336c;
@@ -89,57 +105,57 @@
 <header>
     <img src="icons/spa.png" alt="Spa" class="logo">
     <div class="menu">
-        <a href="#">Về chúng tôi</a>
-        <a href="#">Dịch vụ làm đẹp</a>
-        <a href="#">Phun xăm</a>
-        <a href="#">Bác sĩ</a>
-        <a href="#">Tips làm đẹp</a>
-        <a href="#">Nhượng quyền</a>
+        <a href="#" data-tooltip="Thông tin giới thiệu, lịch sử hình thành spa">Về chúng tôi</a>
+        <a href="#" data-tooltip="Các dịch vụ chăm sóc da, cơ thể, thư giãn">Dịch vụ làm đẹp</a>
+        <a href="#" data-tooltip="Phun môi, mày, mí bằng công nghệ mới">Phun xăm</a>
+        <a href="#" data-tooltip="Đội ngũ bác sĩ, chuyên viên tư vấn">Bác sĩ</a>
+        <a href="#" data-tooltip="Mẹo làm đẹp tại nhà, chăm sóc da mỗi ngày">Tips làm đẹp</a>
+        <a href="#" data-tooltip="Thông tin hợp tác nhượng quyền thương hiệu">Nhượng quyền</a>
         <span class="hotline">📞 Hotline: 1800 3333</span>
     </div>
 </header>
 
 <h2>Dịch vụ tại Spa</h2>
+
 <div class="services-container">
-<!-- ✅ Đã sửa: thêm tên dịch vụ vào goToDetail(id, name) -->
-<div class="service-card" onclick="goToDetail(1, 'Chăm Sóc Da')">
-    <img src="icons/skincare.png" alt="Chăm sóc da">
-    <p>Chăm Sóc Da</p>
-</div>
-<div class="service-card" onclick="goToDetail(2, 'Điều Trị Mụn')">
-    <img src="icons/acne.png" alt="Điều trị mụn">
-    <p>Điều Trị Mụn</p>
-</div>
-<div class="service-card" onclick="goToDetail(3, 'Điều Trị Nám')"> <!-- ❌ bạn đang ghi nhầm ggoToDetail -->
-    <img src="icons/pigment.png" alt="Điều trị nám">
-    <p>Điều Trị Nám</p>
-</div>
-<div class="service-card" onclick="goToDetail(4, 'Điều Trị Sẹo Rỗ')">
-    <img src="icons/scar.png" alt="Điều trị sẹo rỗ">
-    <p>Điều Trị Sẹo Rỗ</p>
-</div>
-<div class="service-card" onclick="goToDetail(5, 'Giảm Béo')">
-    <img src="icons/slim.png" alt="Giảm béo">
-    <p>Giảm Béo</p>
-</div>
-<div class="service-card" onclick="goToDetail(6, 'Triệt Lông')">
-    <img src="icons/hair.png" alt="Triệt lông">
-    <p>Triệt Lông</p>
-</div>
-<div class="service-card" onclick="goToDetail(7, 'Phun Xăm')">
-    <img src="icons/tattoo.png" alt="Phun xăm">
-    <p>Phun Xăm</p>
-</div>
-<div class="service-card" onclick="goToDetail(8, 'Tắm Trắng')">
-    <img src="icons/bath.png" alt="Tắm trắng">
-    <p>Tắm Trắng</p>
-</div>
+    <div class="service-card" onclick="goToDetail(1, 'Chăm Sóc Da')">
+        <img src="icons/skincare.png" alt="Chăm sóc da">
+        <p>Chăm Sóc Da</p>
+    </div>
+    <div class="service-card" onclick="goToDetail(2, 'Điều Trị Mụn')">
+        <img src="icons/acne.png" alt="Điều trị mụn">
+        <p>Điều Trị Mụn</p>
+    </div>
+    <div class="service-card" onclick="goToDetail(3, 'Điều Trị Nám')">
+        <img src="icons/pigment.png" alt="Điều trị nám">
+        <p>Điều Trị Nám</p>
+    </div>
+    <div class="service-card" onclick="goToDetail(4, 'Điều Trị Sẹo Rỗ')">
+        <img src="icons/scar.png" alt="Điều trị sẹo rỗ">
+        <p>Điều Trị Sẹo Rỗ</p>
+    </div>
+    <div class="service-card" onclick="goToDetail(5, 'Giảm Béo')">
+        <img src="icons/slim.png" alt="Giảm béo">
+        <p>Giảm Béo</p>
+    </div>
+    <div class="service-card" onclick="goToDetail(6, 'Triệt Lông')">
+        <img src="icons/hair.png" alt="Triệt lông">
+        <p>Triệt Lông</p>
+    </div>
+    <div class="service-card" onclick="goToDetail(7, 'Phun Xăm')">
+        <img src="icons/tattoo.png" alt="Phun xăm">
+        <p>Phun Xăm</p>
+    </div>
+    <div class="service-card" onclick="goToDetail(8, 'Tắm Trắng')">
+        <img src="icons/bath.png" alt="Tắm trắng">
+        <p>Tắm Trắng</p>
+    </div>
 </div>
 
 <script>
     function goToDetail(id, name) {
         localStorage.setItem("serviceId", id);
-        localStorage.setItem("serviceName", name); // rất quan trọng để hiện tiêu đề
+        localStorage.setItem("serviceName", name);
         window.location.href = "chitiet.html";
     }
 </script>
