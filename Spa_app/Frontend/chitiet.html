@@ -19,49 +19,105 @@
       border-radius: 10px;
     }
     button {
-      margin-top: 20px;
-      padding: 10px 20px;
+      margin-top: 10px;
+      padding: 8px 16px;
       background: #d6336c;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
+    .package {
+      border: 1px solid #ddd;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 15px;
+      background: #fff;
+    }
   </style>
 </head>
 <body>
 
-  <h2 id="serviceTitle">Chi tiết dịch vụ</h2>
+<h2 id="serviceTitle">Chi tiết dịch vụ</h2>
 
-  <div class="content" id="serviceContent">
-    <!-- Nội dung động sẽ được chèn ở đây -->
-  </div>
+<div class="content">
+  <p id="serviceContent"></p>
 
-  <button onclick="goToBooking()">Đặt lịch ngay</button>
+  <h3>Các gói dịch vụ:</h3>
+  <div id="packageList"></div>
+</div>
 
-  <script>
-    const serviceId = localStorage.getItem("serviceId");
-    const serviceName = localStorage.getItem("serviceName");
+<script>
+  const serviceId = localStorage.getItem("serviceId");
+  const serviceName = localStorage.getItem("serviceName");
+  document.getElementById("serviceTitle").innerText = serviceName;
 
-    document.getElementById("serviceTitle").innerText = serviceName;
+  const serviceDescriptions = {
+    1: "Chăm sóc da cơ bản giúp làm sạch, cấp ẩm và thư giãn làn da.",
+    2: "Liệu trình điều trị mụn giúp giảm viêm, làm dịu da và ngăn ngừa mụn.",
+    3: "Dịch vụ điều trị nám giúp làm sáng vùng da tối màu, đều màu da.",
+    4: "Giải pháp trị sẹo rỗ bằng công nghệ cao như phi kim, laser CO2.",
+    5: "Liệu trình giảm béo không xâm lấn, an toàn và hiệu quả.",
+    6: "Triệt lông bằng laser, cho làn da mịn màng lâu dài.",
+    7: "Dịch vụ phun xăm môi, mày, mí tự nhiên, không đau.",
+    8: "Tắm trắng toàn thân bằng công nghệ phi thuyền, an toàn tuyệt đối."
+  };
+  document.getElementById("serviceContent").innerText = serviceDescriptions[serviceId] || "Không tìm thấy nội dung.";
 
-    const serviceDescriptions = {
-      1: "Chăm sóc da cơ bản giúp làm sạch, cấp ẩm và thư giãn làn da.",
-      2: "Liệu trình điều trị mụn giúp giảm viêm, làm dịu da và ngăn ngừa mụn.",
-      3: "Dịch vụ điều trị nám giúp làm sáng vùng da tối màu, đều màu da.",
-      4: "Giải pháp trị sẹo rỗ bằng công nghệ cao như phi kim, laser CO2.",
-      5: "Liệu trình giảm béo không xâm lấn, an toàn và hiệu quả.",
-      6: "Triệt lông bằng laser, cho làn da mịn màng lâu dài.",
-      7: "Dịch vụ phun xăm môi, mày, mí tự nhiên, không đau.",
-      8: "Tắm trắng toàn thân bằng công nghệ phi thuyền, an toàn tuyệt đối."
-    };
+  const packages = {
+    1: [
+      { name: "Chăm sóc da cơ bản", price: "200.000đ", desc: "Làm sạch sâu và massage mặt." },
+      { name: "Chăm sóc da chuyên sâu", price: "350.000đ", desc: "Tẩy tế bào chết, hút mụn và mặt nạ cao cấp." }
+    ],
+    2: [
+      { name: "Trị mụn E2X", price: "300.000đ", desc: "Trị mụn viêm, mụn đầu đen bằng ánh sáng sinh học." },
+      { name: "Trị mụn chuẩn y khoa", price: "450.000đ", desc: "Trị liệu chuyên sâu kết hợp máy lạnh siêu âm." }
+    ],
+    3: [
+      { name: "Thay da trẻ hóa tế bào", price: "30.000000đ", desc: "Tái sinh da giúp làn da quay về trạng thái da khỏe." },
+      { name: "Điều trị nám da mặt", price: "1000.000đ", desc: "Làm mờ vết nám." }
+    ],
+    4: [
+      { name: "Trị sẹo phi kim tế bào gốc", price: "900.000đ", desc: "Kích thích tăng sinh collagen, cải thiện sẹo rỗ lâu năm." },
+      { name: "Laser Fractional CO2", price: "1.200.000đ", desc: "Điều trị sẹo bằng công nghệ laser không xâm lấn." }
+    ],
+    5: [
+      { name: "Giảm béo RF vùng bụng", price: "600.000đ", desc: "Tiêu mỡ không xâm lấn bằng sóng RF nhiệt." },
+      { name: "Cavitation Slim toàn thân", price: "1.500.000đ", desc: "Giảm mỡ toàn thân kết hợp massage tạo form dáng." }
+    ],
+    6: [
+      { name: "Triệt lông nách", price: "200.000đ", desc: "Làm sạch lông nách, giảm thâm, se lỗ chân lông." },
+      { name: "Triệt lông bikini", price: "450.000đ", desc: "An toàn, thẩm mỹ vùng kín bằng công nghệ Diode Laser." }
+    ],
+    7: [
+      { name: "Phun môi collagen", price: "1.200.000đ", desc: "Môi căng mịn, đều màu, không đau, lên màu chuẩn." },
+      { name: "Điêu khắc chân mày 6D", price: "1.800.000đ", desc: "Phun tán bột kết hợp điêu khắc cho cặp mày tự nhiên." }
+    ],
+    8: [
+      { name: "Tắm trắng phi thuyền", price: "500.000đ", desc: "Dưỡng chất thiên nhiên, da bật tông ngay sau liệu trình." },
+      { name: "Tắm trắng collagen vitamin C", price: "750.000đ", desc: "Nuôi dưỡng da trắng hồng, mịn màng, không bong tróc." }
+    ],
+  };
 
-    document.getElementById("serviceContent").innerText = serviceDescriptions[serviceId] || "Không tìm thấy nội dung.";
+  const pkgList = document.getElementById("packageList");
+  const list = packages[serviceId] || [];
+  list.forEach(pkg => {
+    const div = document.createElement("div");
+    div.className = "package";
+    div.innerHTML = `
+        <h4>${pkg.name}</h4>
+        <p><strong>Giá:</strong> ${pkg.price}</p>
+        <p>${pkg.desc}</p>
+        <button onclick="goToBooking('${pkg.name}')">Đặt gói này</button>
+      `;
+    pkgList.appendChild(div);
+  });
 
-    function goToBooking() {
-      window.location.href = "datlich.html";
-    }
-  </script>
+  function goToBooking(packageName) {
+    localStorage.setItem("selectedPackage", packageName);
+    window.location.href = "datlich.html";
+  }
+</script>
 
 </body>
 </html>

@@ -27,9 +27,7 @@
       margin-top: 20px;
       font-weight: bold;
     }
-    input,
-    select,
-    button {
+    input, select, button {
       width: 100%;
       padding: 10px;
       margin-top: 8px;
@@ -62,166 +60,179 @@
       cursor: not-allowed;
       pointer-events: none;
     }
+    #selectedPackageBox {
+      margin-top: 15px;
+      font-style: italic;
+      color: #d6336c;
+    }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Đặt lịch Spa</h2>
-    <form id="bookingForm">
-      <label>Họ và tên:</label>
-      <input type="text" id="name" required />
+<div class="form-container">
+  <h2>Đặt lịch Spa</h2>
 
-      <label>Số điện thoại:</label>
-      <input type="text" id="phone" required />
+  <!-- ✅ Hiển thị gói dịch vụ nếu có -->
+  <div id="selectedPackageBox"></div>
 
-      <label>Dịch vụ:</label>
-      <select id="service">
-        <option value="1">Chăm sóc da</option>
-        <option value="2">Điều trị mụn</option>
-        <option value="3">Điều trị nám</option>
-        <option value="4">Điều trị sẹo rỗ</option>
-        <option value="5">Giảm béo</option>
-        <option value="6">Triệt lông</option>
-        <option value="7">Phun xăm</option>
-        <option value="8">Tắm trắng</option>
-      </select>
+  <form id="bookingForm">
+    <label>Họ và tên:</label>
+    <input type="text" id="name" required />
 
-      <label>Chi nhánh:</label>
-      <select id="branch">
-        <option value="1">2/3 Tô Ký, Hóc Môn</option>
-        <option value="2">123 Quang Trung,Gò Vấp</option>
-        <option value="3">100 Nguyễn Thị Minh Khai, Quận 1</option>
-      </select>
+    <label>Số điện thoại:</label>
+    <input type="text" id="phone" required />
 
-      <label>Chọn ngày:</label>
-      <input type="date" id="date" required />
+    <label>Dịch vụ:</label>
+    <select id="service">
+      <option value="1">Chăm sóc da</option>
+      <option value="2">Điều trị mụn</option>
+      <option value="3">Điều trị nám</option>
+      <option value="4">Điều trị sẹo rỗ</option>
+      <option value="5">Giảm béo</option>
+      <option value="6">Triệt lông</option>
+      <option value="7">Phun xăm</option>
+      <option value="8">Tắm trắng</option>
+    </select>
 
-      <label>Chọn giờ:</label>
-      <div class="time-buttons" id="timeButtons"></div>
+    <label>Chi nhánh:</label>
+    <select id="branch">
+      <option value="1">2/3 Tô Ký, Hóc Môn</option>
+      <option value="2">123 Quang Trung, Gò Vấp</option>
+      <option value="3">100 Nguyễn Thị Minh Khai, Quận 1</option>
+    </select>
 
-      <button type="submit">Xác nhận</button>
-    </form>
-  </div>
+    <label>Chọn ngày:</label>
+    <input type="date" id="date" required />
 
-  <script>
-    const times = [
-      "09:00", "09:30", "10:00", "10:30",
-      "11:00", "11:30", "13:00", "13:30",
-      "14:00", "14:30", "15:00", "15:30",
-      "16:00", "16:30", "17:00", "17:30",
-      "18:00", "18:30", "19:00", "19:30"
-    ];
-    const timeContainer = document.getElementById("timeButtons");
-    let selectedTime = null;
+    <label>Chọn giờ:</label>
+    <div class="time-buttons" id="timeButtons"></div>
 
-    function renderTimeButtons(booked = []) {
-      timeContainer.innerHTML = "";
-      times.forEach(time => {
-        const btn = document.createElement("div");
-        btn.className = "time-button";
-        btn.textContent = time;
+    <button type="submit">Xác nhận</button>
+  </form>
+</div>
 
-        if (booked.includes(time)) {
-          btn.classList.add("disabled-slot");
-        } else {
-          btn.onclick = () => {
-            document.querySelectorAll(".time-button").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            selectedTime = time;
-          };
-        }
-        timeContainer.appendChild(btn);
+<script>
+  const times = [
+    "09:00", "09:30", "10:00", "10:30",
+    "11:00", "11:30", "13:00", "13:30",
+    "14:00", "14:30", "15:00", "15:30",
+    "16:00", "16:30", "17:00", "17:30",
+    "18:00", "18:30", "19:00", "19:30"
+  ];
+  const timeContainer = document.getElementById("timeButtons");
+  let selectedTime = null;
+
+  // ✅ Hiển thị gói đã chọn (nếu có)
+  const selectedPackage = localStorage.getItem("selectedPackage");
+  if (selectedPackage) {
+    document.getElementById("selectedPackageBox").innerText = `Gói đã chọn: ${selectedPackage}`;
+  }
+
+  function renderTimeButtons(booked = []) {
+    timeContainer.innerHTML = "";
+    times.forEach(time => {
+      const btn = document.createElement("div");
+      btn.className = "time-button";
+      btn.textContent = time;
+
+      if (booked.includes(time)) {
+        btn.classList.add("disabled-slot");
+      } else {
+        btn.onclick = () => {
+          document.querySelectorAll(".time-button").forEach(b => b.classList.remove("active"));
+          btn.classList.add("active");
+          selectedTime = time;
+        };
+      }
+      timeContainer.appendChild(btn);
+    });
+  }
+
+  async function fetchBookedTimes(branchId, dateStr) {
+    try {
+      const res = await fetch(`http://localhost:8080/api/datlich/check?branchId=${branchId}&date=${dateStr}`);
+      if (!res.ok) throw new Error("API lỗi");
+      return await res.json();
+    } catch (e) {
+      console.error("Lỗi fetch booked times:", e);
+      return [];
+    }
+  }
+
+  async function updateDisabledSlots() {
+    const date = document.getElementById("date").value;
+    const branchId = document.getElementById("branch").value;
+    if (date && branchId) {
+      const booked = await fetchBookedTimes(branchId, date);
+      renderTimeButtons(booked);
+    }
+  }
+
+  document.getElementById("date").addEventListener("change", updateDisabledSlots);
+  document.getElementById("branch").addEventListener("change", updateDisabledSlots);
+
+  document.getElementById("bookingForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const serviceId = document.getElementById("service").value;
+    const branchId = document.getElementById("branch").value;
+    const date = document.getElementById("date").value;
+    const serviceName = document.getElementById("service").selectedOptions[0].text;
+    const branchName = document.getElementById("branch").selectedOptions[0].text;
+
+    if (!name || !phone || !date || !selectedTime) {
+      alert("Vui lòng nhập đầy đủ thông tin và chọn giờ!");
+      return;
+    }
+
+    const appointmentTime = `${date}T${selectedTime}:00`;
+
+    try {
+      const userRes = await fetch("http://localhost:8080/api/user/create-or-get", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, phone })
       });
-    }
 
-    async function fetchBookedTimes(branchId, dateStr) {
-      try {
-        const res = await fetch(`http://localhost:8080/api/datlich/check?branchId=${branchId}&date=${dateStr}`);
-        if (!res.ok) throw new Error("API lỗi");
-        return await res.json();
-      } catch (e) {
-        console.error("Lỗi fetch booked times:", e);
-        return [];
-      }
-    }
-
-    async function updateDisabledSlots() {
-      const date = document.getElementById("date").value;
-      const branchId = document.getElementById("branch").value;
-      if (date && branchId) {
-        const booked = await fetchBookedTimes(branchId, date);
-        renderTimeButtons(booked);
-      }
-    }
-
-    document.getElementById("date").addEventListener("change", updateDisabledSlots);
-    document.getElementById("branch").addEventListener("change", updateDisabledSlots);
-
-    document.getElementById("bookingForm").addEventListener("submit", async function (e) {
-      e.preventDefault();
-
-      const name = document.getElementById("name").value.trim();
-      const phone = document.getElementById("phone").value.trim();
-      const serviceId = document.getElementById("service").value;
-      const branchId = document.getElementById("branch").value;
-      const date = document.getElementById("date").value;
-      const serviceName = document.getElementById("service").selectedOptions[0].text;
-      const branchName = document.getElementById("branch").selectedOptions[0].text;
-
-      if (!name || !phone || !date || !selectedTime) {
-        alert("Vui lòng nhập đầy đủ thông tin và chọn giờ!");
+      const user = await userRes.json();
+      if (!userRes.ok) {
+        alert("❌ Không tạo được người dùng.");
         return;
       }
 
-      const appointmentTime = `${date}T${selectedTime}:00`;
+      const res = await fetch("http://localhost:8080/api/datlich", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: user.id,
+          serviceId: Number(serviceId),
+          branchId: Number(branchId),
+          appointmentTime
+        })
+      });
 
-      try {
-        // Gọi API tạo hoặc lấy user
-        const userRes = await fetch("http://localhost:8080/api/user/create-or-get", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ name, phone })
-        });
-
-        const user = await userRes.json();
-        if (!userRes.ok) {
-          alert("❌ Không tạo được người dùng.");
-          return;
-        }
-
-        // Gọi API đặt lịch
-        const res = await fetch("http://localhost:8080/api/datlich", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            userId: user.id,
-            serviceId: Number(serviceId),
-            branchId: Number(branchId),
-            appointmentTime
-          })
-        });
-
-        const result = await res.json();
-        if (res.ok) {
-          // Lưu thông tin để hiển thị trong success.html
-          localStorage.setItem("lastBooking", JSON.stringify({
-            name,
-            phone,
-            service: serviceName,
-            branch: branchName,
-            time: `${selectedTime} ngày ${date.split("-").reverse().join("-")}`
-          }));
-          window.location.href = "success.html";
-        } else {
-          alert("❌ Đặt lịch thất bại: " + result.message);
-        }
-      } catch (err) {
-        alert("❌ Lỗi kết nối đến server.");
-        console.error(err);
+      const result = await res.json();
+      if (res.ok) {
+        localStorage.setItem("lastBooking", JSON.stringify({
+          name,
+          phone,
+          service: serviceName,
+          branch: branchName,
+          time: `${selectedTime} ngày ${date.split("-").reverse().join("-")}`,
+          package: selectedPackage || null
+        }));
+        window.location.href = "success.html";
+      } else {
+        alert("❌ Đặt lịch thất bại: " + result.message);
       }
-    });
+    } catch (err) {
+      alert("❌ Lỗi kết nối đến server.");
+      console.error(err);
+    }
+  });
 
-    renderTimeButtons();
-  </script>
+  renderTimeButtons();
+</script>
 </body>
 </html>
